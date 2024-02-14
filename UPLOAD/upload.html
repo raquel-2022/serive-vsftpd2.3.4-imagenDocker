@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carga de Archivos</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <h1>Carga de Archivos</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="file">Selecciona un archivo:</label>
+        <input type="file" name="file" id="file" accept="">
+        <br>
+        <input type="submit" value="Subir Archivo">
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        $(document).ready(function(){
+            $('#uploadForm').submit(function(e){
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'upload.php',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                        $('#message').html(response);
+                        // Limpiar el formulario después de una carga exitosa
+                        $('#uploadForm')[0].reset();
+                    },
+                    error: function(){
+                        $('#message').html('Error al subir el archivo.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
